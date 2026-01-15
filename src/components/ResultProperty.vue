@@ -188,7 +188,7 @@ export default {
       }
 
       return this.config.display === 'image'
-        ? `${this.articlePath}${prop}`.replaceAll(' ', '_')
+        ? `${this.articlePath.replace(/\/+$/, '')}/${prop.replace(/^\/+/, '')}`.replaceAll(' ', '_')
         : false;
     },
     href(prop) {
