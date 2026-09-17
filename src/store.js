@@ -427,15 +427,6 @@ const updateStore = (store) => {
         aggregations: JSON.stringify(state.dates),
       };
 
-      // Add fuzziness
-      // eslint-disable-next-line no-undef
-      if (
-        mediaWikiValues.WikiSearchFront.config.settings.fuzzy === 'true'
-        && params.term.trim().length > 0
-      ) {
-        params.term = params.term.split(' ').join('~ ').trim().concat('~');
-      }
-
       // when sort options are configured add them to the parameters
       if (
         mediaWikiValues.WikiSearchFront.config.settings['sort options']
@@ -583,31 +574,51 @@ const store = new Vuex.Store({
       commit('SET_API_CALLS', {
         text: actions.text,
         index: actions.index,
+        fallback: actions.fallback || '',
       });
       // eslint-disable-next-line prefer-arrow-callback
       clearTimeout(this.ongoingRequest);
       this.ongoingRequest = setTimeout(() => {
         // eslint-disable-next-line no-undef
         const api = new mw.Api();
-        const params = {
-          action: 'parse',
-          text: `<div>${store.state.apiCalls.map((call) => `${call.index}^^%%%^^${call.text}`).join('%%^^^%%')}</div>`,
-          format: 'json',
-          wrapoutputclass: '',
-          disablelimitreport: true,
-        };
-        api.post(params).done((data) => {
-          if (!data.parse) {
-            return;
-          }
-          const result = data.parse.text['*'];
-          const templates = Object.fromEntries(
-            result.substring(5, result.length - 6)
-              .split('%%^^^%%')
-              .map(e => e.split('^^%%%^^')),
+        const calls = [...store.state.apiCalls];
+        const batchSize = 50;
+
+        for (let i = 0; i < calls.length; i += batchSize) {
+          const batch = calls.slice(i, i + batchSize);
+          const fallbackTemplates = Object.fromEntries(
+            batch.map(call => [call.index, call.fallback]),
           );
-          commit('SET_TEMPLATES', { ...store.state.renderedTemplates, ...templates });
-        });
+          const params = {
+            action: 'parse',
+            text: `<div>${batch.map((call) => `${call.index}^^%%%^^${call.text}`).join('%%^^^%%')}</div>`,
+            format: 'json',
+            wrapoutputclass: '',
+            disablelimitreport: true,
+          };
+
+          api.post(params).done((data) => {
+            const result = data.parse && data.parse.text && data.parse.text['*'];
+            if (!result) {
+              return;
+            }
+            const parsedTemplates = result.substring(5, result.length - 6)
+              .split('%%^^^%%')
+              .map(e => e.split('^^%%%^^'));
+            const templates = { ...fallbackTemplates, ...Object.fromEntries(parsedTemplates) };
+            commit('SET_TEMPLATES', { ...store.state.renderedTemplates, ...templates });
+          });
+          setTimeout(() => {
+            const missingTemplates = Object.fromEntries(
+              batch
+                .filter(call => !store.state.renderedTemplates[call.index])
+                .map(call => [call.index, call.fallback]),
+            );
+            if (Object.keys(missingTemplates).length) {
+              commit('SET_TEMPLATES', { ...store.state.renderedTemplates, ...missingTemplates });
+            }
+          }, 10000);
+        }
       }, 100);
     },
     doApiCall({ commit }, { actions }) {
