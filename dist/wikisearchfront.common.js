@@ -10569,22 +10569,8 @@ var store_store = new vuex_esm["a" /* default */].Store({
             var parsedTemplates = result.substring(5, result.length - 6).split('%%^^^%%').map(function (e) {
               return e.split('^^%%%^^');
             });
-
-            var templates = _objectSpread2(_objectSpread2({}, fallbackTemplates), Object.fromEntries(parsedTemplates));
-
-            commit('SET_TEMPLATES', _objectSpread2(_objectSpread2({}, store_store.state.renderedTemplates), templates));
+            commit('SET_TEMPLATES', _objectSpread2(_objectSpread2(_objectSpread2({}, fallbackTemplates), store_store.state.renderedTemplates), Object.fromEntries(parsedTemplates)));
           });
-          setTimeout(function () {
-            var missingTemplates = Object.fromEntries(batch.filter(function (call) {
-              return !store_store.state.renderedTemplates[call.index];
-            }).map(function (call) {
-              return [call.index, call.fallback];
-            }));
-
-            if (Object.keys(missingTemplates).length) {
-              commit('SET_TEMPLATES', _objectSpread2(_objectSpread2({}, store_store.state.renderedTemplates), missingTemplates));
-            }
-          }, 10000);
         };
 
         for (var i = 0; i < calls.length; i += batchSize) {

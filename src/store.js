@@ -616,16 +616,6 @@ const store = new Vuex.Store({
               .map(e => e.split('^^%%%^^'));
             commit('SET_TEMPLATES', { ...fallbackTemplates, ...store.state.renderedTemplates, ...Object.fromEntries(parsedTemplates) });
           });
-          setTimeout(() => {
-            const missingTemplates = Object.fromEntries(
-              batch
-                .filter(call => !store.state.renderedTemplates[call.index])
-                .map(call => [call.index, call.fallback]),
-            );
-            if (Object.keys(missingTemplates).length) {
-              commit('SET_TEMPLATES', { ...store.state.renderedTemplates, ...missingTemplates });
-            }
-          }, 10000);
         }
       }, 100);
     },
