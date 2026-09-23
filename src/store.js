@@ -614,8 +614,7 @@ const store = new Vuex.Store({
             const parsedTemplates = result.substring(5, result.length - 6)
               .split('%%^^^%%')
               .map(e => e.split('^^%%%^^'));
-            const templates = { ...fallbackTemplates, ...Object.fromEntries(parsedTemplates) };
-            commit('SET_TEMPLATES', { ...store.state.renderedTemplates, ...templates });
+            commit('SET_TEMPLATES', { ...fallbackTemplates, ...store.state.renderedTemplates, ...Object.fromEntries(parsedTemplates) });
           });
           setTimeout(() => {
             const missingTemplates = Object.fromEntries(
