@@ -9675,6 +9675,9 @@ function _objectSpread2(target) {
 
   return target;
 }
+// EXTERNAL MODULE: ./node_modules/core-js/modules/es.array.iterator.js
+var es_array_iterator = __webpack_require__("e260");
+
 // EXTERNAL MODULE: ./node_modules/core-js/modules/web.dom-collections.iterator.js
 var web_dom_collections_iterator = __webpack_require__("ddb0");
 
@@ -9721,6 +9724,7 @@ var es_string_iterator = __webpack_require__("3ca3");
 var es_array_from = __webpack_require__("a630");
 
 // CONCATENATED MODULE: ./node_modules/@babel/runtime/helpers/esm/iterableToArray.js
+
 
 
 
@@ -9784,6 +9788,7 @@ function _arrayWithHoles(arr) {
 
 
 
+
 function _iterableToArrayLimit(arr, i) {
   var _i = arr == null ? null : typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"];
 
@@ -9826,9 +9831,6 @@ function _nonIterableRest() {
 function _slicedToArray(arr, i) {
   return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest();
 }
-// EXTERNAL MODULE: ./node_modules/core-js/modules/es.array.iterator.js
-var es_array_iterator = __webpack_require__("e260");
-
 // EXTERNAL MODULE: ./node_modules/core-js/modules/web.url.js
 var web_url = __webpack_require__("2b3d");
 
@@ -9849,6 +9851,9 @@ var es_regexp_to_string = __webpack_require__("25f0");
 
 // EXTERNAL MODULE: ./node_modules/core-js/modules/es.json.stringify.js
 var es_json_stringify = __webpack_require__("e9c4");
+
+// EXTERNAL MODULE: ./node_modules/core-js/modules/es.string.trim.js
+var es_string_trim = __webpack_require__("498a");
 
 // EXTERNAL MODULE: ./node_modules/core-js/modules/es.array.sort.js
 var es_array_sort = __webpack_require__("4e82");
@@ -9885,9 +9890,6 @@ function dateUtils_readableDate(date) {
 }
 
 
-// EXTERNAL MODULE: ./node_modules/core-js/modules/es.string.trim.js
-var es_string_trim = __webpack_require__("498a");
-
 // CONCATENATED MODULE: ./src/utilities/elastic.js
 
 
@@ -9897,6 +9899,7 @@ var prepareQuery = function prepareQuery(term) {
 
 /* harmony default export */ var elastic = (prepareQuery);
 // CONCATENATED MODULE: ./src/store.js
+
 
 
 
@@ -10388,7 +10391,13 @@ var store_updateStore = function updateStore(store) {
         limit: state.size,
         pageid: mediaWikiValues.wgArticleId,
         aggregations: JSON.stringify(state.dates)
-      }; // when sort options are configured add them to the parameters
+      }; // Add fuzziness
+      // eslint-disable-next-line no-undef
+
+      if (mediaWikiValues.WikiSearchFront.config.settings.fuzzy === 'true' && params.term.trim().length > 0) {
+        params.term = params.term.split(' ').join('~ ').trim().concat('~');
+      } // when sort options are configured add them to the parameters
+
 
       if (mediaWikiValues.WikiSearchFront.config.settings['sort options'] && state.sortOrderType !== 'score') {
         params.sortings = JSON.stringify([{
@@ -11170,6 +11179,7 @@ var Tooltip_component = normalizeComponent(
 
 
 
+
 //
 //
 //
@@ -11413,6 +11423,7 @@ var Pill_component = normalizeComponent(
 
 /* harmony default export */ var Pill = (Pill_component.exports);
 // CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js??ref--13-0!./node_modules/@vue/cli-plugin-babel/node_modules/thread-loader/dist/cjs.js!./node_modules/babel-loader/lib!./node_modules/cache-loader/dist/cjs.js??ref--1-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/PillsSelected.vue?vue&type=script&lang=js&
+
 
 
 
@@ -12304,18 +12315,16 @@ var es_array_includes = __webpack_require__("caad");
 // EXTERNAL MODULE: ./node_modules/core-js/modules/es.string.includes.js
 var es_string_includes = __webpack_require__("2532");
 
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"9de6a7d2-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--1-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/WikiTemplate.vue?vue&type=template&id=25cbf2ca&
-var WikiTemplatevue_type_template_id_25cbf2ca_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('span',{staticClass:"wikisearch-wiki-template",class:!_vm.renderedTemplate && _vm.data.value
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"9de6a7d2-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--1-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/WikiTemplate.vue?vue&type=template&id=eb8762a4&
+var WikiTemplatevue_type_template_id_eb8762a4_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('span',{staticClass:"wikisearch-wiki-template",class:!_vm.renderedTemplate && _vm.data.value
     ? 'wikisearch-wiki-template--loading wikisearch-element--pending'
     : '',domProps:{"innerHTML":_vm._s(_vm.renderedTemplate)}})}
-var WikiTemplatevue_type_template_id_25cbf2ca_staticRenderFns = []
+var WikiTemplatevue_type_template_id_eb8762a4_staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/components/WikiTemplate.vue?vue&type=template&id=25cbf2ca&
+// CONCATENATED MODULE: ./src/components/WikiTemplate.vue?vue&type=template&id=eb8762a4&
 
 // CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js??ref--13-0!./node_modules/@vue/cli-plugin-babel/node_modules/thread-loader/dist/cjs.js!./node_modules/babel-loader/lib!./node_modules/cache-loader/dist/cjs.js??ref--1-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/WikiTemplate.vue?vue&type=script&lang=js&
-
-
 
 //
 //
@@ -12368,9 +12377,6 @@ var WikiTemplatevue_type_template_id_25cbf2ca_staticRenderFns = []
           fallback: this.data.value
         }
       });
-    },
-    escapeHtml: function escapeHtml(value) {
-      return value.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#039;');
     }
   }
 });
@@ -12390,8 +12396,8 @@ var WikiTemplatevue_type_style_index_0_lang_css_ = __webpack_require__("26b1");
 
 var WikiTemplate_component = normalizeComponent(
   components_WikiTemplatevue_type_script_lang_js_,
-  WikiTemplatevue_type_template_id_25cbf2ca_render,
-  WikiTemplatevue_type_template_id_25cbf2ca_staticRenderFns,
+  WikiTemplatevue_type_template_id_eb8762a4_render,
+  WikiTemplatevue_type_template_id_eb8762a4_staticRenderFns,
   false,
   null,
   null,
@@ -12401,6 +12407,7 @@ var WikiTemplate_component = normalizeComponent(
 
 /* harmony default export */ var WikiTemplate = (WikiTemplate_component.exports);
 // CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js??ref--13-0!./node_modules/@vue/cli-plugin-babel/node_modules/thread-loader/dist/cjs.js!./node_modules/babel-loader/lib!./node_modules/cache-loader/dist/cjs.js??ref--1-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/ResultProperty.vue?vue&type=script&lang=js&
+
 
 
 
@@ -12758,6 +12765,7 @@ var ResultProperty_component = normalizeComponent(
 
 
 
+
 //
 //
 //
@@ -12897,6 +12905,7 @@ var CalendarDialogvue_type_template_id_b74582c0_staticRenderFns = []
 // CONCATENATED MODULE: ./src/components/CalendarDialog.vue?vue&type=template&id=b74582c0&
 
 // CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js??ref--13-0!./node_modules/@vue/cli-plugin-babel/node_modules/thread-loader/dist/cjs.js!./node_modules/babel-loader/lib!./node_modules/cache-loader/dist/cjs.js??ref--1-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/CalendarDialog.vue?vue&type=script&lang=js&
+
 
 
 
@@ -13086,6 +13095,7 @@ var CalendarDialog_component = normalizeComponent(
 
 /* harmony default export */ var CalendarDialog = (CalendarDialog_component.exports);
 // CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js??ref--13-0!./node_modules/@vue/cli-plugin-babel/node_modules/thread-loader/dist/cjs.js!./node_modules/babel-loader/lib!./node_modules/cache-loader/dist/cjs.js??ref--1-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/results/ResultsCalendar.vue?vue&type=script&lang=js&
+
 
 
 
@@ -13392,6 +13402,7 @@ var ResultsTemplatevue_type_template_id_f1bc9938_staticRenderFns = []
 
 
 
+
 //
 //
 //
@@ -13616,6 +13627,7 @@ var ResultsCalendarYearvue_type_template_id_65438da0_staticRenderFns = []
 
 
 
+
 //
 //
 //
@@ -13803,6 +13815,7 @@ var CalendarToolsvue_type_template_id_08ea06a1_staticRenderFns = []
 // CONCATENATED MODULE: ./src/components/CalendarTools.vue?vue&type=template&id=08ea06a1&
 
 // CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js??ref--13-0!./node_modules/@vue/cli-plugin-babel/node_modules/thread-loader/dist/cjs.js!./node_modules/babel-loader/lib!./node_modules/cache-loader/dist/cjs.js??ref--1-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/CalendarTools.vue?vue&type=script&lang=js&
+
 
 
 
@@ -14779,6 +14792,7 @@ var FacetRangeSlidervue_type_template_id_e6f396c4_staticRenderFns = []
 
 
 
+
 //
 //
 //
@@ -15007,6 +15021,7 @@ var FacetComboboxvue_type_template_id_43d58326_staticRenderFns = []
 var es_string_match = __webpack_require__("466d");
 
 // CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js??ref--13-0!./node_modules/@vue/cli-plugin-babel/node_modules/thread-loader/dist/cjs.js!./node_modules/babel-loader/lib!./node_modules/cache-loader/dist/cjs.js??ref--1-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/filters/FacetCombobox.vue?vue&type=script&lang=js&
+
 
 
 
@@ -15364,6 +15379,7 @@ var FacetAskComboboxvue_type_template_id_537d69a6_staticRenderFns = []
 
 
 
+
 //
 //
 //
@@ -15618,6 +15634,7 @@ var FacetElasticComboboxvue_type_template_id_50f7ab21_staticRenderFns = []
 
 
 
+
 //
 //
 //
@@ -15782,6 +15799,7 @@ var FacetFiltervue_type_template_id_3609d37b_staticRenderFns = []
 // CONCATENATED MODULE: ./src/components/filters/FacetFilter.vue?vue&type=template&id=3609d37b&
 
 // CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js??ref--13-0!./node_modules/@vue/cli-plugin-babel/node_modules/thread-loader/dist/cjs.js!./node_modules/babel-loader/lib!./node_modules/cache-loader/dist/cjs.js??ref--1-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/filters/FacetFilter.vue?vue&type=script&lang=js&
+
 
 
 
@@ -16532,6 +16550,7 @@ var es_array_splice = __webpack_require__("a434");
 
 
 
+
 //
 //
 //
@@ -16755,6 +16774,7 @@ var FacetSorted_component = normalizeComponent(
 
 /* harmony default export */ var FacetSorted = (FacetSorted_component.exports);
 // CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js??ref--13-0!./node_modules/@vue/cli-plugin-babel/node_modules/thread-loader/dist/cjs.js!./node_modules/babel-loader/lib!./node_modules/cache-loader/dist/cjs.js??ref--1-0!./node_modules/vue-loader/lib??vue-loader-options!./src/App.vue?vue&type=script&lang=js&
+
 
 
 
